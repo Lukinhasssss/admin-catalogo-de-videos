@@ -38,6 +38,7 @@ jobs:
   sonarcloud-scan:
     name: SonarCloud Scan
     needs: Gradle Test
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
