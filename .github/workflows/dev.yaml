@@ -22,7 +22,7 @@ jobs:
 
   test:
     name: Gradle Test
-    needs: Gradle Build
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
 
   sonarcloud-scan:
     name: SonarCloud Scan
-    needs: Gradle Test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
