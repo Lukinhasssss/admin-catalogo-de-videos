@@ -6,5 +6,6 @@ sonarqube {
         property 'sonar.projectKey', 'Lukinhasssss_admin-catalogo-de-videos'
         property 'sonar.projectName', 'admin-catalogo-de-videos'
         property 'sonar.organization', 'lukinhasssss'
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
