@@ -1,0 +1,10 @@
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        // Insert other SonarQube properties here
+        property 'sonar.projectKey', 'Lukinhasssss_admin-catalogo-de-videos'
+        property 'sonar.projectName', 'admin-catalogo-de-videos'
+        property 'sonar.organization', 'lukinhasssss'
+    }
+}

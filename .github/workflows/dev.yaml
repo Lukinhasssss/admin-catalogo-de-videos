@@ -1,0 +1,49 @@
+name: Run build, test and sonar checks
+
+on:
+  pull_request:
+    branches:
+      - develop
+      -
+jobs:
+  build:
+    name: Gradle Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: gradle
+      - name: Run build with gradle
+        run: ./gradlew build -x test
+
+  test:
+    name: Gradle Test
+    needs: Gradle Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: gradle
+      - name: Run tests with gradle
+        run: ./gradlew test
+
+  sonarcloud-scan:
+    name: SonarCloud Scan
+    needs: Gradle Test
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Run SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
