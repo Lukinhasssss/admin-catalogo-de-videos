@@ -20,8 +20,6 @@ test {
 }
 
 subprojects {
-    apply plugin: 'org.sonarqube'
-
     sonarqube {
         properties {
             property 'sonar.coverage.jacoco.xmlReportPaths', "$projectDir.parentFile.path/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
