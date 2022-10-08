@@ -33,7 +33,7 @@ jobs:
           distribution: 'adopt'
           cache: gradle
       - name: Run tests with gradle
-        run: ./gradlew test
+        run: ./gradlew test codeCoverageReport
 
   sonarcloud-scan:
     name: SonarCloud Scan
