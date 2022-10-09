@@ -1,12 +1,10 @@
-apply plugin: 'org.sonarqube'
-
 sonarqube {
     properties {
         property 'sonar.projectKey', 'Lukinhasssss_admin-catalogo-de-videos'
         property 'sonar.projectName', 'admin-catalogo-de-videos'
         property 'sonar.organization', 'lukinhasssss'
         property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.coverage.jacoco.xmlReportPaths', "$projectDir.parentFile.path/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml'
 //        property 'sonar.coverage.exclusions', '' +
 //                'br/com/lukinhasssss/admin/catalogo/application/**, ' +
 //                'br/com/lukinhasssss/admin/catalogo/infrastructure/**, ' +
