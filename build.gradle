@@ -81,6 +81,12 @@ tasks.register("codeCoverageReport", JacocoReport) {
 }
 
 subprojects {
+    sonarqube {
+        properties {
+            property 'sonar.coverage.jacoco.xmlReportPaths', "$projectDir.parentFile.path/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+        }
+    }
+
     tasks.withType(Test) {
         useJUnitPlatform()
         test.finalizedBy codeCoverageReport

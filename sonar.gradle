@@ -1,21 +1,22 @@
+apply plugin: 'org.sonarqube'
+
 sonarqube {
     properties {
         property 'sonar.projectKey', 'Lukinhasssss_admin-catalogo-de-videos'
         property 'sonar.projectName', 'admin-catalogo-de-videos'
         property 'sonar.organization', 'lukinhasssss'
         property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml'
-//        property 'sonar.coverage.exclusions', '' +
-//                'br/com/lukinhasssss/admin/catalogo/application/**, ' +
-//                'br/com/lukinhasssss/admin/catalogo/infrastructure/**, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/*.class, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/category/*Gateway.class, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/category/*ID.class, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/category/*SearchQuery.class, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/category/*Validator.class, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/pagination/*, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/validation/*, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/validation/**, ' +
-//                'br/com/lukinhasssss/admin/catalogo/domain/exceptions/*'
+        property 'sonar.coverage.exclusions', '' +
+                'br/com/lukinhasssss/admin/catalogo/application/**, ' +
+                'br/com/lukinhasssss/admin/catalogo/infrastructure/**, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/*.class, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/category/*Gateway.class, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/category/*ID.class, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/category/*SearchQuery.class, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/category/*Validator.class, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/pagination/*, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/validation/*, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/validation/**, ' +
+                'br/com/lukinhasssss/admin/catalogo/domain/exceptions/*'
     }
 }
