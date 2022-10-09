@@ -9,10 +9,10 @@ public class Category extends AggregateRoot<CategoryID> {
 
     private final String name;
     private final String description;
-    private final boolean active;
+    private boolean active;
     private final Instant createdAt;
-    private final Instant updatedAt;
-    private final Instant deletedAt;
+    private Instant updatedAt;
+    private Instant deletedAt;
 
     private Category(
         final CategoryID anId,
@@ -45,6 +45,25 @@ public class Category extends AggregateRoot<CategoryID> {
         new CategoryValidator(this, handler).validate();
     }
 
+    public Category activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = Instant.now();
+
+        return this;
+    }
+
+    public Category deactivate() {
+        if (getDeletedAt() == null)
+            this.deletedAt = Instant.now();
+
+        this.active = false;
+        this.updatedAt = Instant.now();
+
+        return this;
+    }
+
+    @Override
     public CategoryID getId() {
         return id;
     }
