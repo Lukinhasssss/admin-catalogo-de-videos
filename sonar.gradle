@@ -4,6 +4,7 @@ sonarqube {
         property 'sonar.projectName', 'admin-catalogo-de-videos'
         property 'sonar.organization', 'lukinhasssss'
         property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.coverage.jacoco.xmlReportPaths', "$projectDir.parentFile.path/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
         property 'sonar.exclusions', 'build/generated/**/*'
 //        property 'sonar.coverage.exclusions',
 //                'build/generated/**/*,' +
