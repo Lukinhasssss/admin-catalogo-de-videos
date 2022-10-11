@@ -40,23 +40,23 @@ tasks.register("codeCoverageReport", JacocoReport) {
 //                rootProject.tasks.codeCoverageReport.dependsOn(it)
 //            }
 
-            afterEvaluate {
-                classDirectories.setFrom(files(classDirectories.files.collect {
-                    fileTree(dir: it, exclude: [
-                            'br/com/lukinhasssss/admin/catalogo/application/**',
-                            'br/com/lukinhasssss/admin/catalogo/infrastructure/**',
-                            'br/com/lukinhasssss/admin/catalogo/domain/*.class',
-                            'br/com/lukinhasssss/admin/catalogo/domain/category/*Gateway.class',
-                            'br/com/lukinhasssss/admin/catalogo/domain/category/*ID.class',
-                            'br/com/lukinhasssss/admin/catalogo/domain/category/*SearchQuery.class',
-                            'br/com/lukinhasssss/admin/catalogo/domain/category/*Validator.class',
-                            'br/com/lukinhasssss/admin/catalogo/domain/pagination/*',
-                            'br/com/lukinhasssss/admin/catalogo/domain/validation/*',
-                            'br/com/lukinhasssss/admin/catalogo/domain/validation/**',
-                            'br/com/lukinhasssss/admin/catalogo/domain/exceptions/*'
-                    ])
-                }))
-            }
+//            afterEvaluate {
+//                classDirectories.setFrom(files(classDirectories.files.collect {
+//                    fileTree(dir: it, exclude: [
+//                            'br/com/lukinhasssss/admin/catalogo/application/**',
+//                            'br/com/lukinhasssss/admin/catalogo/infrastructure/**',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/*.class',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/category/*Gateway.class',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/category/*ID.class',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/category/*SearchQuery.class',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/category/*Validator.class',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/pagination/*',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/validation/*',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/validation/**',
+//                            'br/com/lukinhasssss/admin/catalogo/domain/exceptions/*'
+//                    ])
+//                }))
+//            }
         }
     }
 
