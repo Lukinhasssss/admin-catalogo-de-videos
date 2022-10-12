@@ -1,0 +1,8 @@
+# Este é o primeiro arquivo que o spring vai ler para buscar as configurações de qualquer biblioteca que tenha no projeto
+
+server:
+  port: 8080
+  undertow:
+    threads:
+      worker: 10
+      io: 2
