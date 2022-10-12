@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  mysql:
+    container_name: adm_videos_mysql
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=adm_videos
+    security_opt:
+      - seccomp:unconfined # Utilizado para desabilitar a parte de segurança no linux
+    ports:
+      - "3306:3306"
+    networks:
+      - adm_videos_network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: adm_videos_phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - "8090:80"
+
+networks:
+  adm_videos_network:
+
+# Para fazer o login na interface do phpmyadmin é necessário passar seu endereço ip no campo Server
