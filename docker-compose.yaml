@@ -13,18 +13,6 @@ services:
       - "3306:3306"
     networks:
       - adm_videos_network
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: adm_videos_phpmyadmin
-    links:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    restart: always
-    ports:
-      - "8090:80"
 
 networks:
   adm_videos_network:
