@@ -1,8 +1,12 @@
 package br.com.lukinhasssss.admin.catalogo.infrastructure;
 
+import br.com.lukinhasssss.admin.catalogo.infrastructure.configuration.WebServerConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class Main {
-//    public static void main(String[] args) {
-//        System.out.println("Hello world!");
-//        System.out.println(new UseCase().execute());
-//    }
+    public static void main(String[] args) {
+        SpringApplication.run(WebServerConfig.class, args);
+    }
 }

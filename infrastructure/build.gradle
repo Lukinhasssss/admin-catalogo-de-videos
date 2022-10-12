@@ -1,11 +1,18 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id "org.sonarqube" version "3.4.0.2513"
+    id 'org.sonarqube' version '3.4.0.2513'
+    id 'org.springframework.boot' version '2.7.4'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 }
 
 group 'br.com.lukinhasssss.admin.catalogo.infrastructure'
 version '1.0-SNAPSHOT'
+
+bootJar {
+    archiveName 'application.jar'
+    destinationDirectory.set(file("${rootProject.buildDir}/libs"))
+}
 
 repositories {
     mavenCentral()
@@ -15,8 +22,12 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    implementation('org.springframework.boot:spring-boot-starter-undertow')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 test {
