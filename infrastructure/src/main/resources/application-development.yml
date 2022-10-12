@@ -1,4 +1,8 @@
-# Este é o primeiro arquivo que o spring vai ler para buscar as configurações de qualquer biblioteca que tenha no projeto
+mysql:
+  username: root
+  password: password
+  schema: adm_videos
+  url: localhost:3306
 
 server:
   port: 8080
