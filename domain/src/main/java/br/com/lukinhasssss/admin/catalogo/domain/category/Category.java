@@ -4,6 +4,7 @@ import br.com.lukinhasssss.admin.catalogo.domain.AggregateRoot;
 import br.com.lukinhasssss.admin.catalogo.domain.validation.ValidationHandler;
 
 import java.time.Instant;
+import java.util.Objects;
 
 public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
@@ -27,8 +28,8 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         this.name = aName;
         this.description = aDescription;
         this.active = isActive;
-        this.createdAt = aCreationDate;
-        this.updatedAt = anUpdateDate;
+        this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(anUpdateDate, "'updatedAt' should not be null");
         this.deletedAt = aDeleteDate;
     }
 
@@ -38,6 +39,26 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         final var deletedAt = isActive ? null : now;
 
         return new Category(id, aName, aDescription, isActive, now, now, deletedAt);
+    }
+
+    public static Category with(
+        final CategoryID anId,
+        final String name,
+        final String description,
+        final boolean active,
+        final Instant createdAt,
+        final Instant updatedAt,
+        final Instant deletedAt
+    ) {
+        return new Category(
+            anId, name, description, active, createdAt, updatedAt, deletedAt
+        );
+    }
+
+    public static Category with(final Category aCategory) {
+        return with(
+            aCategory.getId(), aCategory.name, aCategory.description, aCategory.isActive(), aCategory.createdAt, aCategory.updatedAt, aCategory.deletedAt
+        );
     }
 
     @Override
