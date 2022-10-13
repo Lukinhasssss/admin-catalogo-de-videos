@@ -3,7 +3,7 @@ package br.com.lukinhasssss.admin.catalogo.infrastructure.category;
 import br.com.lukinhasssss.admin.catalogo.domain.category.Category;
 import br.com.lukinhasssss.admin.catalogo.domain.category.CategoryID;
 import br.com.lukinhasssss.admin.catalogo.domain.category.CategorySearchQuery;
-import br.com.lukinhasssss.admin.catalogo.infrastructure.MySQLGatewayTest;
+import br.com.lukinhasssss.admin.catalogo.MySQLGatewayTest;
 import br.com.lukinhasssss.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.lukinhasssss.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Test;
