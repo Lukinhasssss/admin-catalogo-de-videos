@@ -36,6 +36,11 @@ dependencies {
 
     implementation('mysql:mysql-connector-java')
 
+    implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.11')
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.14.0-rc1') // Dependencia utilizada para corrigir vulnerabilidade na 'springdoc-openapi-webmvc-core'
+    implementation('org.yaml:snakeyaml:1.33') // Dependencia utilizada para corrigir vulnerabilidade na 'springdoc-openapi-webmvc-core'
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.11')
+
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
