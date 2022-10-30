@@ -1,14 +1,16 @@
 package br.com.lukinhasssss.admin.catalogo.infrastructure.category.presenters;
 
 import br.com.lukinhasssss.admin.catalogo.application.category.retrieve.get.CategoryOutput;
-import br.com.lukinhasssss.admin.catalogo.infrastructure.category.models.CategoryApiOutput;
+import br.com.lukinhasssss.admin.catalogo.application.category.retrieve.list.CategoryListOutput;
+import br.com.lukinhasssss.admin.catalogo.infrastructure.category.models.CategoryResponse;
+import br.com.lukinhasssss.admin.catalogo.infrastructure.category.models.CategoryListResponse;
 
 import java.util.function.Function;
 
 public interface CategoryApiPresenter {
 
-    Function<CategoryOutput, CategoryApiOutput> present =
-        output -> new CategoryApiOutput(
+    Function<CategoryOutput, CategoryResponse> present =
+        output -> new CategoryResponse(
             output.id().getValue(),
             output.name(),
             output.description(),
@@ -18,14 +20,25 @@ public interface CategoryApiPresenter {
             output.deletedAt()
         );
 
-    static CategoryApiOutput present(final CategoryOutput output) {
-        return new CategoryApiOutput(
+    static CategoryResponse present(final CategoryOutput output) {
+        return new CategoryResponse(
             output.id().getValue(),
             output.name(),
             output.description(),
             output.isActive(),
             output.createdAt(),
             output.updatedAt(),
+            output.deletedAt()
+        );
+    }
+
+    static CategoryListResponse present(final CategoryListOutput output) {
+        return new CategoryListResponse(
+            output.id().getValue(),
+            output.name(),
+            output.description(),
+            output.isActive(),
+            output.createdAt(),
             output.deletedAt()
         );
     }
