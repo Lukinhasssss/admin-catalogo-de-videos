@@ -4,7 +4,7 @@ import br.com.lukinhasssss.admin.catalogo.IntegrationTest;
 import br.com.lukinhasssss.admin.catalogo.domain.category.Category;
 import br.com.lukinhasssss.admin.catalogo.domain.category.CategoryGateway;
 import br.com.lukinhasssss.admin.catalogo.domain.category.CategoryID;
-import br.com.lukinhasssss.admin.catalogo.domain.exceptions.DomainException;
+import br.com.lukinhasssss.admin.catalogo.domain.exceptions.NotFoundException;
 import br.com.lukinhasssss.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.lukinhasssss.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ class GetCategoryByIdUseCaseIT {
         final var expectedId = CategoryID.from("123");
 
         final var actualException = assertThrows(
-            DomainException.class, () -> useCase.execute(expectedId.getValue())
+            NotFoundException.class, () -> useCase.execute(expectedId.getValue())
         );
 
         assertEquals(expectedErrorMessage, actualException.getMessage());

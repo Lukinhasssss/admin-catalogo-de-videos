@@ -22,11 +22,11 @@ class CategoryMySQLGatewayTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
-    void testInjectedDependencies() {
-        assertNotNull(categoryGateway);
-        assertNotNull(categoryRepository);
-    }
+//    @Test
+//    void testInjectedDependencies() {
+//        assertNotNull(categoryGateway);
+//        assertNotNull(categoryRepository);
+//    }
 
     @Test
     void givenAValidCategory_whenCallsCreate_shouldReturnANewCategory() {
