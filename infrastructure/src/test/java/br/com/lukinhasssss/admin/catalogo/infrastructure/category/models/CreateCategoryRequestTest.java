@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 
 @JacksonTest
-class UpdateCategoryRequestTest {
+class CreateCategoryRequestTest {
 
     @Autowired
-    private JacksonTester<UpdateCategoryRequest> json;
+    private JacksonTester<CreateCategoryRequest> json;
 
     @Test
     void testUnmarshall() throws Exception {
@@ -44,7 +44,7 @@ class UpdateCategoryRequestTest {
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = false;
 
-        final var request = new UpdateCategoryRequest(
+        final var request = new CreateCategoryRequest(
             expectedName,
             expectedDescription,
             expectedIsActive
