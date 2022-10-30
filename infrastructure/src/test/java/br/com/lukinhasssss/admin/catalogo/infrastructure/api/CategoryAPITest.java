@@ -3,6 +3,7 @@ package br.com.lukinhasssss.admin.catalogo.infrastructure.api;
 import br.com.lukinhasssss.admin.catalogo.ControllerTest;
 import br.com.lukinhasssss.admin.catalogo.application.category.create.CreateCategoryOutput;
 import br.com.lukinhasssss.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import br.com.lukinhasssss.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
 import br.com.lukinhasssss.admin.catalogo.application.category.retrieve.get.CategoryOutput;
 import br.com.lukinhasssss.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import br.com.lukinhasssss.admin.catalogo.application.category.update.UpdateCategoryOutput;
@@ -50,6 +51,9 @@ class CategoryAPITest {
 
     @MockBean
     private UpdateCategoryUseCase updateCategoryUseCase;
+
+    @MockBean
+    private DeleteCategoryUseCase deleteCategoryUseCase;
 
     @Test
     void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() throws Exception {
@@ -315,5 +319,25 @@ class CategoryAPITest {
                 && Objects.equals(expectedDescription, cmd.description())
                 && Objects.equals(expectedIsActive, cmd.isActive())
         ));
+    }
+
+    @Test
+    void givenAValidId_whenCallsDeleteCategory_shouldReturnNoContent() throws Exception {
+        // given
+        final var expectedId = "123";
+
+        doNothing().when(deleteCategoryUseCase).execute(any());
+
+        // when
+        final var request = delete("/categories/{id}", expectedId)
+            .accept(APPLICATION_JSON)
+            .contentType(APPLICATION_JSON);
+
+        final var response = mvc.perform(request).andDo(print());
+
+        // then
+        response.andExpect(status().isNoContent());
+
+        verify(deleteCategoryUseCase, times(1)).execute(eq(expectedId));
     }
 }
