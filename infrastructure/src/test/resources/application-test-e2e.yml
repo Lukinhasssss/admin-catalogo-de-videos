@@ -1,6 +1,8 @@
 logging:
   level:
     root: info
+    org.testcontainers: info
+    com.github.dockerjava: info
 
 mysql:
   username: root
