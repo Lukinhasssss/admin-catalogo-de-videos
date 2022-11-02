@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: info
+    org.testcontainers: info
+    com.github.dockerjava: info
+
+mysql:
+  username: root
+  password: password
+  schema: adm_videos
+  url: localhost:${mysql.port}
