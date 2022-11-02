@@ -11,16 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Objects;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @E2ETest
@@ -46,7 +50,6 @@ public class CategoryE2ETest {
     @Test
     void asACatalogAdminIShouldBeAbleToCreateANewCategoryWithValidValues() throws Exception {
         assertTrue(MY_SQL_CONTAINER.isRunning());
-
         assertEquals(0, categoryRepository.count());
 
         final var expectedName = "Filmes";
@@ -65,6 +68,85 @@ public class CategoryE2ETest {
         assertNull(actualCategory.deletedAt());
     }
 
+    @Test
+    void asACatalogAdminIShouldBeAbleToNavigateToAllCategories() throws Exception {
+        assertTrue(MY_SQL_CONTAINER.isRunning());
+        assertEquals(0, categoryRepository.count());
+
+        givenACategory("Filmes", null, true);
+        givenACategory("Animes", null, true);
+        givenACategory("Séries", null, true);
+
+        listCategories(0, 1)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(0)))
+            .andExpect(jsonPath("$.per_page", equalTo(1)))
+            .andExpect(jsonPath("$.total", equalTo(3)))
+            .andExpect(jsonPath("$.items", hasSize(1)))
+            .andExpect(jsonPath("$.items[0].name", equalTo("Animes")));
+
+        listCategories(1, 1)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(1)))
+            .andExpect(jsonPath("$.per_page", equalTo(1)))
+            .andExpect(jsonPath("$.total", equalTo(3)))
+            .andExpect(jsonPath("$.items", hasSize(1)))
+            .andExpect(jsonPath("$.items[0].name", equalTo("Filmes")));
+
+        listCategories(2, 1)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(2)))
+            .andExpect(jsonPath("$.per_page", equalTo(1)))
+            .andExpect(jsonPath("$.total", equalTo(3)))
+            .andExpect(jsonPath("$.items", hasSize(1)))
+            .andExpect(jsonPath("$.items[0].name", equalTo("Séries")));
+
+        listCategories(3, 1)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(3)))
+            .andExpect(jsonPath("$.per_page", equalTo(1)))
+            .andExpect(jsonPath("$.total", equalTo(3)))
+            .andExpect(jsonPath("$.items", hasSize(0)));
+    }
+
+    @Test
+    void asACatalogAdminIShouldBeAbleToSearchBetweenAllCategories() throws Exception {
+        assertTrue(MY_SQL_CONTAINER.isRunning());
+        assertEquals(0, categoryRepository.count());
+
+        givenACategory("Filmes", null, true);
+        givenACategory("Animes", null, true);
+        givenACategory("Séries", null, true);
+
+        listCategories(0, 1, "ani")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(0)))
+            .andExpect(jsonPath("$.per_page", equalTo(1)))
+            .andExpect(jsonPath("$.total", equalTo(1)))
+            .andExpect(jsonPath("$.items", hasSize(1)))
+            .andExpect(jsonPath("$.items[0].name", equalTo("Animes")));
+    }
+
+    @Test
+    void asACatalogAdminIShouldBeAbleToSortAllCategoriesByDescriptionDesc() throws Exception {
+        assertTrue(MY_SQL_CONTAINER.isRunning());
+        assertEquals(0, categoryRepository.count());
+
+        givenACategory("Filmes", "A", true);
+        givenACategory("Animes", "B", true);
+        givenACategory("Séries", "C", true);
+
+        listCategories(0, 3, "", "description", "desc")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.current_page", equalTo(0)))
+            .andExpect(jsonPath("$.per_page", equalTo(3)))
+            .andExpect(jsonPath("$.total", equalTo(3)))
+            .andExpect(jsonPath("$.items", hasSize(3)))
+            .andExpect(jsonPath("$.items[0].name", equalTo("Séries")))
+            .andExpect(jsonPath("$.items[1].name", equalTo("Animes")))
+            .andExpect(jsonPath("$.items[2].name", equalTo("Filmes")));
+    }
+
     private CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
         final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
 
@@ -73,11 +155,11 @@ public class CategoryE2ETest {
             .content(Json.writeValueAsString(aRequestBody));
 
         final var actualId = Objects.requireNonNull(
-            mvc.perform(aRequest)
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location"))
-                .replace("/categories/", "");
+                mvc.perform(aRequest)
+                    .andExpect(status().isCreated())
+                    .andReturn()
+                    .getResponse().getHeader("Location"))
+            .replace("/categories/", "");
 
         return CategoryID.from(actualId);
     }
@@ -93,5 +175,32 @@ public class CategoryE2ETest {
             .getResponse().getContentAsString();
 
         return Json.readValue(json, CategoryResponse.class);
+    }
+
+    private ResultActions listCategories(final int page, final int perPage) throws Exception {
+        return listCategories(page, perPage, "", "", "");
+    }
+
+    private ResultActions listCategories(final int page, final int perPage, final String search) throws Exception {
+        return listCategories(page, perPage, search, "", "");
+    }
+
+    private ResultActions listCategories(
+        final int page,
+        final int perPage,
+        final String search,
+        final String sort,
+        final String direction
+    ) throws Exception {
+        final var aRequest = get("/categories")
+            .queryParam("page", String.valueOf(page))
+            .queryParam("perPage", String.valueOf(perPage))
+            .queryParam("search", search)
+            .queryParam("sort", sort)
+            .queryParam("dir", direction)
+            .accept(APPLICATION_JSON)
+            .contentType(APPLICATION_JSON);
+
+        return mvc.perform(aRequest);
     }
 }
