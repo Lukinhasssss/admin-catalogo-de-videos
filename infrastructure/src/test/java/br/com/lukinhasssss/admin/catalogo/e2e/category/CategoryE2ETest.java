@@ -58,14 +58,14 @@ public class CategoryE2ETest {
 
         final var actualId = givenACategory(expectedName, expectedDescription, expectedIsActive);
 
-        final var actualCategory = retrieveACategory(actualId.getValue());
+        final var actualCategory = categoryRepository.findById(actualId.getValue()).get();
 
-        assertEquals(expectedName, actualCategory.name());
-        assertEquals(expectedDescription, actualCategory.description());
-        assertEquals(expectedIsActive, actualCategory.active());
-        assertNotNull(actualCategory.createdAt());
-        assertNotNull(actualCategory.updatedAt());
-        assertNull(actualCategory.deletedAt());
+        assertEquals(expectedName, actualCategory.getName());
+        assertEquals(expectedDescription, actualCategory.getDescription());
+        assertEquals(expectedIsActive, actualCategory.isActive());
+        assertNotNull(actualCategory.getCreatedAt());
+        assertNotNull(actualCategory.getUpdatedAt());
+        assertNull(actualCategory.getDeletedAt());
     }
 
     @Test
@@ -145,6 +145,41 @@ public class CategoryE2ETest {
             .andExpect(jsonPath("$.items[0].name", equalTo("Séries")))
             .andExpect(jsonPath("$.items[1].name", equalTo("Animes")))
             .andExpect(jsonPath("$.items[2].name", equalTo("Filmes")));
+    }
+
+    @Test
+    void asACatalogAdminIShouldBeAbleToGetACategoryByItsIdentifier() throws Exception {
+        assertTrue(MY_SQL_CONTAINER.isRunning());
+        assertEquals(0, categoryRepository.count());
+
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+
+        final var actualId = givenACategory(expectedName, expectedDescription, expectedIsActive);
+
+        final var actualCategory = retrieveACategory(actualId.getValue());
+
+        assertEquals(expectedName, actualCategory.name());
+        assertEquals(expectedDescription, actualCategory.description());
+        assertEquals(expectedIsActive, actualCategory.active());
+        assertNotNull(actualCategory.createdAt());
+        assertNotNull(actualCategory.updatedAt());
+        assertNull(actualCategory.deletedAt());
+    }
+
+    @Test
+    void asACatalogAdminIShouldBeAbleToSeeATreatedErrorByGettingANotFoundCategory() throws Exception {
+        assertTrue(MY_SQL_CONTAINER.isRunning());
+        assertEquals(0, categoryRepository.count());
+
+        final var aRequest = get("/categories/{id}", "123")
+            .accept(APPLICATION_JSON)
+            .contentType(APPLICATION_JSON);
+
+        final var json = mvc.perform(aRequest)
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", equalTo("Category with ID 123 was not found")));
     }
 
     private CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
